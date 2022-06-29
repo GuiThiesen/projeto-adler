@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <title>Mercado Liberto Área de ADM</title>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+            }
+            
+            th, td {
+              padding: 10px;
+            }
+
+            .grind-container{
+                display: grid;
+                grid-template-areas: 
+                'header'
+                'main'
+                'footer';
+                grid-template-columns: 1fr;
+                grid-template-rows: 5rem 1fr 5rem;
+                height: 100%;
+            }
+
+            .products{
+                display: flex;
+                flex-wrap: wrap;
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                justify-content: center;
+            }
+
+            .products li{
+                flex: 0 1 30rem;
+                margin: 1rem;
+                margin-bottom: 0;
+                height: 26rem;
+                border-top: 0.2rem #e0e0e0 solid;
+            }
+
+            .product{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                height: 100%;
+            }
+
+            .product img{
+                max-height: 26rem;
+                max-width: 22rem;
+                margin-top: 2rem;
+            }
+
+            .product-name{
+                line-height: 2.2rem;
+                font-size: 2rem;
+                padding-top: 5px;
+            }
+
+            .product-description{
+                font-size: 1.2rem;
+                color: #808080;
+            }
+
+            .product-price{
+                font-size: 2rem;
+            }
+
+            .product a{
+                text-decoration: none;
+                color:#000000;
+            }
+
+            .product a:hover{
+                color: #f08040;
+            }
+            
+            .product button{
+                text-decoration: none;
+                border: none;
+                background-color: transparent;
+                font-family: inherit;
+                padding: 0;
+                cursor: pointer;
+
+                @media screen and (-ms-high-contrast: active) {
+                    border: 2px solid currentcolor;
+                }
+            }
+
+            *{
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Mercado Liberto <%= usuario_logado.ADM == 1? ' Área de ADM' : '' %></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!--<form class="form-inline my-2 my-lg-0 pt-3" action="/buscar_produto" method="post">
+                    <input class="form-control mr-sm-2" type="search" name="searchbar" placeholder="Buscar Produtos" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+                </form>-->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="home">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <% if(usuario_logado.ADM == 1 ){ %>
+                        <li class="nav-item active">
+                        <a class="nav-link" href="lista_usuarios">Editar Usuários</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="lista_produtos_adm">Editar Produtos</a>
+                        </li>
+                        <li class="nav-item active">
+                        <a class="nav-link" href="/transportadora">Cadastrar Transportadora</a>
+                        </li>
+                        <li class="nav-item active">
+                        <a class="nav-link" href="/lista_transportadoras">Editar Transportadoras</a>
+                        </li>
+                    <% } %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%= usuario_logado.Nome %>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/edita_conta">Meu Perfil</a>
+                            <% if(usuario_logado.ADM == 0 ){ %>
+                            <a class="dropdown-item" href="/lista_produtos">Meus Produtos</a>
+                            <a class="dropdown-item" href="#">Carrinho</a>
+                            <a class="dropdown-item" href='/produto'>Vender</a>
+                            <% } %>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/">Sair</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="text-center center-div">
+            <div class="container w-100 border py-4">
+                <div class="title pb-5">
+                    <h2 class="font-weight-bold">Resultados da Pesquisa </h2>
+                </div>
+                <div class="grid-container">
+                    <main>
+                        <div>
+                            <ul class="products">
+                                <% docs.forEach(function(produto){ %>
+                                <li>
+                                    <div class="product">
+                                        <form action="pagina_produto" method="post">
+                                            <div>
+                                                <input type="hidden" value="<%= produto._id %>" name="id">
+                                                <button type="submit" class="button"><img src="/images/<%= produto._id %>.png" alt="product"/></button>
+                                            </div>
+                                            <div class="product-name">
+                                                <button type="submit" class="button"><%= produto.Nome %></button>
+                                            </div>
+                                        </form>
+                                        <div class="product-description">
+                                            <%= produto.Descricao %>
+                                        </div>
+                                        <div class="product-price">
+                                            R$ <%= produto.Preco %>
+                                        </div>
+                                    </div>
+                                </li>
+                                <%})%>
+                            </ul>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

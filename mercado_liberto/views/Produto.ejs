@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Mercado Liberto: Cadastrar Produto</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Mercado Liberto<%= usuario_logado.ADM == 1? ' Área de ADM' : '' %></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                  <a class="nav-link" href="home">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <% if(usuario_logado.ADM == 1 ){ %>
+                <li class="nav-item active">
+                  <a class="nav-link" href="lista_usuarios">Editar Usuários</a>
+                  </li>
+                  <li class="nav-item active">
+                      <a class="nav-link" href="lista_produtos_adm">Editar Produtos</a>
+                  </li>
+                  <li class="nav-item active">
+                  <a class="nav-link" href="/transportadora">Cadastrar Transportadora</a>
+                  </li>
+                  <li class="nav-item active">
+                  <a class="nav-link" href="/lista_transportadoras">Editar Transportadoras</a>
+                  </li>
+              <% } %>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= usuario_logado.Nome %>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="/edita_conta">Meu Perfil</a>
+                      <% if(usuario_logado.ADM == 0 ){ %>
+                      <a class="dropdown-item" href="/lista_produtos">Meus Produtos</a>
+                      <a class="dropdown-item" href="#">Carrinho</a>
+                      <a class="dropdown-item" href='/produto'>Vender</a>
+                      <% } %>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="/">Sair</a>
+                  </div>
+              </li>
+          </ul>
+      </div>
+    </nav>
+    
+    <div class="p-3 mb-2 bg-transparent text-dark">
+          <div class="container w-50 border py-5">
+            <div class="text-center center-div" id=''>
+                <h2 class="font-weight-bold">Forneça os dados do produto</h2>
+                <form action="/produto" method='post' class="pt-3">
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Produto" name="product">
+                  </div>
+                  <div class="form-group">
+                    <input type="nubmer" class="form-control" placeholder="Valor" name="value">
+                  </div>
+                  <div class="form-group">
+                    <input type="number" class="form-control" placeholder="Estoque disponível" name="inventory">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Principais caracteristicas" name="characteristics">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Descrição" name="description" width 200px height 200px>
+                  </div>
+                  <scan><h4>Transportadoras disponíveis</h4></scan>
+                  <div class="form-group">
+                    <% docs.forEach(function(trasportadora){ %>
+                      <input type="checkbox" value="<%= trasportadora._id +'_'+ trasportadora.Nome%>" name="shippingCheckbox"/><span><%= trasportadora.Nome %></span>
+                    <%})%>
+                  </div>
+                    <div class="form-group">
+                      <label for="category">Escolha a Categoria do produto</label>
+                      <select class="form-control" name="category">
+                        <option value="alimentos">Alimentos</option>
+                        <option value="arte">Arte</option>
+                        <option value="beleza">Beleza</option>
+                        <option value="eletronico">Eletrônico</option>
+                        <option value="jogos">Jogos</option>
+                        <option value="musica">Música</option>]
+                        <option value="roupas">Roupas</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="utensilios">Utensílios</option>
+                      </select>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                      <div class="btn btn-mdb-color btn-rounded float-left">
+                      <span>Escolha a imagem do produto</span>
+                        <input type="file" id="image" class="form-control">
+                      </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-success rounded-pill">Cadastrar produto</button>
+              </form>
+            </div>
+        </div>
+      </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

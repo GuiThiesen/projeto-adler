@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <title>Mercado Liberto ADM</title>
+        <style>
+            *{
+                box-sizing: border-box;
+            }
+
+            .sproduct input{
+                width: 50px;
+                height: 40px;
+                padding-left: 10px;
+                font-size: 16px;
+                margin-right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Mercado Liberto<%= usuario_logado.ADM == 1? ' Área de ADM' : '' %></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="home">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <% if(usuario_logado.ADM == 1 ){ %>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="lista_usuarios">Editar Usuários</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="lista_produtos_adm">Editar Produtos</a>
+                            </li>
+                            <li class="nav-item active">
+                            <a class="nav-link" href="/transportadora">Cadastrar Transportadora</a>
+                            </li>
+                            <li class="nav-item active">
+                            <a class="nav-link" href="/lista_transportadoras">Editar Transportadoras</a>
+                            </li>
+                    <% } %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%= usuario_logado.Nome %>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/edita_conta">Meu Perfil</a>
+                            <% if(usuario_logado.ADM == 0 ){ %>
+                            <a class="dropdown-item" href="/lista_produtos">Meus Produtos</a>
+                            <a class="dropdown-item" href="#">Carrinho</a>
+                            <a class="dropdown-item" href='/produto'>Vender</a>
+                            <% } %>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/">Sair</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="text-center center-div">
+            <div class="container w-100 border py-4">
+                <div class="title pb-5">
+                    <h2 class="font-weight-bold">Página do Produto: <%= docs[0].Nome %></h2>
+                </div>
+                <section class="container sproduct my-6 pt-5">
+                    <div class="row mt-5">
+                        <div class="col-lg-5 col-md-12 col-12">
+                            <img class="img-fluid w-100" src="/public/images/<%= docs[0].Imagem %>.png" açt=""/>
+                        </div>
+                        <div class="col-lg-5 col-md-12 col-12">
+                            <h2><%= docs[0].Nome %></h2>
+                            <h5 class="mb-4"><%= docs[0].Descricao %></h5>
+                            <h2>R$ <%= docs[0].Preco %></h2>
+                            <input type="number" value="1" min="1" max="<%= docs[0].QuantidadeEstoque %>">
+                            <button class="btn btn-success rounded-pill" style="opacity: 1; transition: 0.3s all">Adicionar ao carrinho</button>
+                            <br>
+                            <span>Disponível: <%= docs[0].QuantidadeEstoque %></span>
+                            <h4 class="mt-5">Características:</h4>
+                            <span><%= docs[0].Caracteristicas %></span>
+                            
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
